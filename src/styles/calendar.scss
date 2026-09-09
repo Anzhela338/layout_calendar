@@ -1,21 +1,21 @@
+@use 'sass:list';
+
 body {
   margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 .calendar {
   width: $calendar-width;
 
-  @each $day, $margin in (
-    mon: 0,
-    tue: $day-size + $gap,
-    wed: ($day-size * 2) + ($gap * 2),
-    thu: ($day-size * 3) + ($gap * 3),
-    fri: ($day-size * 4) + ($gap * 4),
-    sat: ($day-size * 5) + ($gap * 5),
-    sun: ($day-size * 6) + ($gap * 6)
-  ) {
+  @each $day in $week-days {
+    $day-index: list.index($week-days, $day) - 1;
+
     &--start-day-#{$day} .calendar__day:first-child {
-      margin-left: $margin;
+      margin-left: ($day-size + $gap) * $day-index;
     }
   }
 
@@ -23,7 +23,7 @@ body {
     &--month-length-#{$length} {
       $first-hidden: $length + 1;
 
-      .calendar__day:first-child(n + #{$first-hidden}) {
+      .calendar__day:nth-child(n + #{$first-hidden}) {
         display: none;
       }
     }
